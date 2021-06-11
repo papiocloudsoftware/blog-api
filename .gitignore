@@ -1,0 +1,11 @@
+.idea/
+
+node_modules/
+
+cdk.out/
+
+*.d.ts
+*.js
+!jest.config.js
+!.eslintrc.js
+!webpack.config.js

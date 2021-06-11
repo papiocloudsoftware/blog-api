@@ -1,0 +1,17 @@
+{
+  "name": "@papiocloudsoftware/blog-api-functional-test",
+  "version": "1.0.0",
+  "description": "ExpressJS implementation of blog API",
+  "repository": {
+    "url": "https://github.com/papiocloudsoftware/blog-api.git",
+    "directory": "packages/express-app"
+  },
+  "author": "Max Schenkelberg <max@papiocloud.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo 'No tests'",
+    "lint": "eslint .",
+    "functional-test": "jest"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "@papiocloudsoftware/blog-api-cdk-app",
+  "version": "1.0.0",
+  "description": "CDK App used to deploy the blog API",
+  "repository": {
+    "url": "https://github.com/papiocloudsoftware/blog-api.git",
+    "directory": "packages/cdk-app"
+  },
+  "author": "Max Schenkelberg <max@papiocloud.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.77",
+    "@types/aws-serverless-express": "^3.3.3",
+    "aws-cdk": "1.108.1",
+    "webpack": "^5.38.1"
+  },
+  "dependencies": {
+    "@aws-cdk/assert": "1.108.1",
+    "@aws-cdk/aws-apigatewayv2": "1.108.1",
+    "@aws-cdk/aws-apigatewayv2-integrations": "1.108.1",
+    "@aws-cdk/aws-dynamodb": "1.108.1",
+    "@aws-cdk/aws-iam": "1.108.1",
+    "@aws-cdk/aws-lambda": "1.108.1",
+    "@aws-cdk/aws-s3": "1.108.1",
+    "@aws-cdk/core": "1.108.1",
+    "@papiocloudsoftware/blog-api-express-app": "1.0.0",
+    "aws-serverless-express": "^3.4.0",
+    "change-case": "^4.1.2"
+  }
+}

@@ -26,7 +26,7 @@ export class ApplicationStack extends Stack {
     });
 
     props.httpApi.addRoutes({
-      path: "{proxy+}",
+      path: "/{proxy+}",
       methods: [HttpMethod.GET],
       integration: new LambdaProxyIntegration({
         payloadFormatVersion: PayloadFormatVersion.VERSION_1_0,

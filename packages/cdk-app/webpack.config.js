@@ -1,3 +1,5 @@
+const TerserPlugin = require("terser-webpack-plugin");
+
 const path = require("path");
 const fs = require("fs");
 
@@ -20,7 +22,13 @@ module.exports = {
     "aws-sdk": "commonjs2 aws-sdk"
   },
   optimization: {
-    minimize: true
+    minimize: true,
+    // Disable LICENSE.txt file creation with `extractComments: false`
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false,
+      }),
+    ]
   },
   output: {
     path: lambdasDir,

@@ -1,4 +1,4 @@
-import { App } from "@aws-cdk/core";
+import { App, CfnCondition, CfnParameter, Fn, Stack } from "@aws-cdk/core";
 import { pascalCase } from "change-case";
 
 import { ApplicationStack, DataStack, DeploymentStack, NetworkingStack } from "./stacks";
@@ -7,13 +7,32 @@ import { ApplicationStack, DataStack, DeploymentStack, NetworkingStack } from ".
  * Blog API CDK App.  Populates resources given a CDK App
  */
 export class BlogApiApp {
+  static readonly APP_SUFFIX = Fn.ref("AppSuffix");
+  static readonly DASH_APP_SUFFIX = Fn.conditionIf("AppSuffixSet", `-${BlogApiApp.APP_SUFFIX}`, "");
+
   static populate(app: App): void {
     const env = app.node.tryGetContext("environmentName");
     const stackSuffix = env ? pascalCase(env) : "";
 
-    new NetworkingStack(app, `BlogApi${stackSuffix}Networking`);
+    const networking = new NetworkingStack(app, `BlogApi${stackSuffix}Networking`);
     new DataStack(app, `BlogApi${stackSuffix}Data`);
-    new ApplicationStack(app, `BlogApi${stackSuffix}Application`);
-    new DeploymentStack(app, `BlogApi${stackSuffix}Deployment`);
+    new ApplicationStack(app, `BlogApi${stackSuffix}Application`, {
+      httpApi: networking.httpApi
+    });
+    new DeploymentStack(app, `BlogApi${stackSuffix}Deployment`, {
+      httpApi: networking.httpApi
+    });
+
+    for (const child of app.node.children) {
+      if (child instanceof Stack) {
+        new CfnParameter(child, "AppSuffix", {
+          type: "String",
+          default: stackSuffix
+        });
+        new CfnCondition(child, "AppSuffixSet", {
+          expression: Fn.conditionNot(Fn.conditionEquals(BlogApiApp.APP_SUFFIX, ""))
+        });
+      }
+    }
   }
 }

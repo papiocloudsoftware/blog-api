@@ -15,7 +15,9 @@
     "test-all": "yarn workspaces run test",
     "lint-all": "yarn workspaces run lint",
     "start": "yarn workspace @papiocloudsoftware/blog-api-express-app run start",
-    "deploy": "yarn workspace @papiocloudsoftware/blog-api-cdk-app run deploy",
+    "cdk-app": "yarn workspace @papiocloudsoftware/blog-api-cdk-app run cdk",
+    "deploy": "yarn cdk-app deploy",
+    "synth": "yarn cdk-app synth",
     "functional-test": "yarn workspace @papiocloudsoftware/blog-api-functional-test run functional-test"
   },
   "devDependencies": {

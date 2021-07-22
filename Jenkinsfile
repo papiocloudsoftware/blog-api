@@ -1,8 +1,3 @@
-Closure deploySteps = {
-  // TODO: Inject credentials and deploy
-  sh "yarn synth -c environmentName=${env}"
-}
-
 pipeline {
   agent any
 
@@ -17,7 +12,7 @@ pipeline {
       steps { sh "yarn test-all" }
     }
     stage("Deploy Test") {
-      steps(deploySteps)
+      steps { sh "yarn synth -c environmentName=test" }
     }
     stage("Functional Test") {
       steps { sh "yarn functional-test" }

@@ -1,11 +1,15 @@
-import { HttpApi, HttpStage, IHttpStage } from "@aws-cdk/aws-apigatewayv2";
+import { DomainName, HttpApi, HttpApiMapping, HttpStage, IHttpStage } from "@aws-cdk/aws-apigatewayv2";
+import { RecordTarget } from "@aws-cdk/aws-route53";
+import { ApiGatewayv2Domain } from "@aws-cdk/aws-route53-targets";
 import { Construct, Stack, StackProps } from "@aws-cdk/core";
+import { AliasRecord, HostedZoneLookup, SharedCertificate } from "@papio/cdk-constructs";
 
 /**
  * Props required to create {DeploymentStack}
  */
 export interface DeploymentStackProps extends StackProps {
   readonly httpApi: HttpApi;
+  readonly domainName?: string;
 }
 
 /**
@@ -23,5 +27,31 @@ export class DeploymentStack extends Stack {
       stageName: "api",
       autoDeploy: true
     });
+
+    if (props.domainName) {
+      const certificate = new SharedCertificate(this, "Certificate", {
+        certificateDomain: props.domainName
+      });
+      const apiDomain = new DomainName(this, "DomainName", {
+        domainName: props.domainName,
+        certificate
+      });
+      new HttpApiMapping(this, "DomainNameMapping", {
+        api: props.httpApi,
+        stage: this.stage,
+        domainName: apiDomain
+      });
+
+      // Cut over DNS
+      const hostedZone = new HostedZoneLookup(this, "HostedZone", {
+        domainName: props.domainName
+      });
+      new AliasRecord(this, "AliasRecord", {
+        zone: hostedZone,
+        recordName: `${props.domainName}.`,
+        target: RecordTarget.fromAlias(new ApiGatewayv2Domain(apiDomain)),
+        comment: "Record for Public Cloudfront distribution"
+      });
+    }
   }
 }

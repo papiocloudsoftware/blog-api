@@ -1,3 +1,5 @@
+gitHubLibrary("deployment-library")
+
 pipeline {
   agent any
 
@@ -12,14 +14,22 @@ pipeline {
       steps { sh "yarn test-all" }
     }
     stage("Deploy Test") {
-      steps { sh "yarn synth -c environmentName=test" }
+      agent {
+        docker {
+          image cdkDeployImage()
+          reuseNode true
+        }
+      }
+      steps {
+        cdkDeploy(cdk: "yarn cdk-app", namespace: "test", parameters: [AppSuffix: "test"])
+      }
     }
-    stage("Functional Test") {
-      steps { sh "yarn functional-test" }
-    }
-    stage("Deploy Prod") {
-      when { branch "master" }
-      steps { sh "echo TODO: Deploy Prod" }
-    }
+//     stage("Functional Test") {
+//       steps { sh "yarn functional-test" }
+//     }
+//     stage("Deploy Prod") {
+//       when { branch "master" }
+//       steps { sh "echo TODO: Deploy Prod" }
+//     }
   }
 }

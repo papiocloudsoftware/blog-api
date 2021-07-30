@@ -20,7 +20,8 @@ export class BlogApiApp {
       httpApi: networking.httpApi
     });
     new DeploymentStack(app, `BlogApi${stackSuffix}Deployment`, {
-      httpApi: networking.httpApi
+      httpApi: networking.httpApi,
+      domainName: `blog${BlogApiApp.DASH_APP_SUFFIX}.papiocloud.com`
     });
 
     for (const child of app.node.children) {

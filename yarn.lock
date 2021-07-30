@@ -22,6 +22,25 @@
     "@aws-cdk/cx-api" "1.89.0"
     constructs "^3.2.0"
 
+"@aws-cdk/aws-apigateway@1.89.0":
+  version "1.89.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-apigateway/-/aws-apigateway-1.89.0.tgz#535773b307b5bd5d9bb28943409ba152703ea4b3"
+  integrity sha512-f5ZBlnI/r3ie69hh00e9OajDpCCo7gZbio4ZOBxy0IA+0WGQMAkLsSlxkM/YvWA32T3VoS2YM7M0dwTfY88Ahw==
+  dependencies:
+    "@aws-cdk/aws-certificatemanager" "1.89.0"
+    "@aws-cdk/aws-cloudwatch" "1.89.0"
+    "@aws-cdk/aws-cognito" "1.89.0"
+    "@aws-cdk/aws-ec2" "1.89.0"
+    "@aws-cdk/aws-elasticloadbalancingv2" "1.89.0"
+    "@aws-cdk/aws-iam" "1.89.0"
+    "@aws-cdk/aws-lambda" "1.89.0"
+    "@aws-cdk/aws-logs" "1.89.0"
+    "@aws-cdk/aws-s3" "1.89.0"
+    "@aws-cdk/aws-s3-assets" "1.89.0"
+    "@aws-cdk/core" "1.89.0"
+    "@aws-cdk/cx-api" "1.89.0"
+    constructs "^3.2.0"
+
 "@aws-cdk/aws-apigatewayv2-integrations@1.89.0":
   version "1.89.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-apigatewayv2-integrations/-/aws-apigatewayv2-integrations-1.89.0.tgz#e9dd8efe2485237fdd182f3a85bce51aeb83cc32"
@@ -92,6 +111,22 @@
     "@aws-cdk/cx-api" "1.89.0"
     constructs "^3.2.0"
 
+"@aws-cdk/aws-cloudfront@1.89.0":
+  version "1.89.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cloudfront/-/aws-cloudfront-1.89.0.tgz#89aef34b51b8096ec568628e0fd2f9e5ef9e7289"
+  integrity sha512-LO7zJsGOC7KE7PtHkvGs7QHwWUrByp3KlaalzY8Akp7WgLhnPSuQEjDe0uhTq+9ADPCrl+6UzVQMXzZgpSX0Jg==
+  dependencies:
+    "@aws-cdk/aws-certificatemanager" "1.89.0"
+    "@aws-cdk/aws-cloudwatch" "1.89.0"
+    "@aws-cdk/aws-ec2" "1.89.0"
+    "@aws-cdk/aws-iam" "1.89.0"
+    "@aws-cdk/aws-kms" "1.89.0"
+    "@aws-cdk/aws-lambda" "1.89.0"
+    "@aws-cdk/aws-s3" "1.89.0"
+    "@aws-cdk/aws-ssm" "1.89.0"
+    "@aws-cdk/core" "1.89.0"
+    constructs "^3.2.0"
+
 "@aws-cdk/aws-cloudwatch@1.89.0":
   version "1.89.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cloudwatch/-/aws-cloudwatch-1.89.0.tgz#6ec80b48c097b9134336b730eeabc1404a923aa3"
@@ -109,6 +144,19 @@
     "@aws-cdk/aws-iam" "1.89.0"
     "@aws-cdk/core" "1.89.0"
     constructs "^3.2.0"
+
+"@aws-cdk/aws-cognito@1.89.0":
+  version "1.89.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cognito/-/aws-cognito-1.89.0.tgz#fa656e54ddad1b61bd57b4eb295fa8ee40b4602a"
+  integrity sha512-KsAHFnvetNCg7o9fLYAQpSwwDanjZ7lNhPdbUQlRIiq81KiRoLQFrLbA+HcN+t8cY/KnmvpVSbfGIWhh02MHBg==
+  dependencies:
+    "@aws-cdk/aws-certificatemanager" "1.89.0"
+    "@aws-cdk/aws-iam" "1.89.0"
+    "@aws-cdk/aws-lambda" "1.89.0"
+    "@aws-cdk/core" "1.89.0"
+    "@aws-cdk/custom-resources" "1.89.0"
+    constructs "^3.2.0"
+    punycode "^2.1.1"
 
 "@aws-cdk/aws-dynamodb@1.89.0":
   version "1.89.0"
@@ -176,6 +224,15 @@
     "@aws-cdk/cloud-assembly-schema" "1.89.0"
     "@aws-cdk/core" "1.89.0"
     "@aws-cdk/cx-api" "1.89.0"
+    constructs "^3.2.0"
+
+"@aws-cdk/aws-elasticloadbalancing@1.89.0":
+  version "1.89.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-elasticloadbalancing/-/aws-elasticloadbalancing-1.89.0.tgz#8fb1ca79cbd79aade724690707bbcf2d4e1ebdc1"
+  integrity sha512-spiMtTTDgH8SXsEXK+fGCYHfCK99FA4ZPnXB/4XkXOgNQj5yo18zuqLxvcPMCTd9Z6j/rRTwuEhW2l0LRjpu0Q==
+  dependencies:
+    "@aws-cdk/aws-ec2" "1.89.0"
+    "@aws-cdk/core" "1.89.0"
     constructs "^3.2.0"
 
 "@aws-cdk/aws-elasticloadbalancingv2@1.89.0":
@@ -256,6 +313,25 @@
     "@aws-cdk/aws-kms" "1.89.0"
     "@aws-cdk/aws-s3-assets" "1.89.0"
     "@aws-cdk/core" "1.89.0"
+    constructs "^3.2.0"
+
+"@aws-cdk/aws-route53-targets@1.89.0":
+  version "1.89.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-route53-targets/-/aws-route53-targets-1.89.0.tgz#b59658853a183351da4eb777ce4d7bd4882004ba"
+  integrity sha512-XoJjO8VevPopyFbe0qdluSV5Cdu4GTsl/4kKUsN+nRZlwwEjOBqeHm4YvtopUPmp+5TW2y+DAmAf31WFc+tRJQ==
+  dependencies:
+    "@aws-cdk/aws-apigateway" "1.89.0"
+    "@aws-cdk/aws-apigatewayv2" "1.89.0"
+    "@aws-cdk/aws-cloudfront" "1.89.0"
+    "@aws-cdk/aws-cognito" "1.89.0"
+    "@aws-cdk/aws-ec2" "1.89.0"
+    "@aws-cdk/aws-elasticloadbalancing" "1.89.0"
+    "@aws-cdk/aws-elasticloadbalancingv2" "1.89.0"
+    "@aws-cdk/aws-iam" "1.89.0"
+    "@aws-cdk/aws-route53" "1.89.0"
+    "@aws-cdk/aws-s3" "1.89.0"
+    "@aws-cdk/core" "1.89.0"
+    "@aws-cdk/region-info" "1.89.0"
     constructs "^3.2.0"
 
 "@aws-cdk/aws-route53@1.89.0":

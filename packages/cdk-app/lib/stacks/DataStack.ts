@@ -1,6 +1,6 @@
 import { AttributeType, ITable, Table } from "@aws-cdk/aws-dynamodb";
 import { Bucket, BucketAccessControl, IBucket } from "@aws-cdk/aws-s3";
-import { Construct, Stack, StackProps } from "@aws-cdk/core";
+import { Construct, RemovalPolicy, Stack, StackProps } from "@aws-cdk/core";
 
 /**
  * Props required to create {DataStack}
@@ -25,6 +25,7 @@ export class DataStack extends Stack {
     });
 
     this.contentBucket = new Bucket(this, "BlogContent", {
+      removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
       accessControl: BucketAccessControl.PRIVATE
     });

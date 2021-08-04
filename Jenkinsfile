@@ -28,7 +28,7 @@ pipeline {
 //       steps { sh "yarn functional-test" }
 //     }
 //     stage("Deploy Prod") {
-//       when { branch "master" }
+//       when { branch "main" }
 //       steps { sh "echo TODO: Deploy Prod" }
 //     }
   }

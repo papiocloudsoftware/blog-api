@@ -1,6 +1,9 @@
 import { AttributeType, ITable, Table } from "@aws-cdk/aws-dynamodb";
+import { AccountRootPrincipal, Role } from "@aws-cdk/aws-iam";
 import { Bucket, BucketAccessControl, IBucket } from "@aws-cdk/aws-s3";
 import { Construct, RemovalPolicy, Stack, StackProps } from "@aws-cdk/core";
+
+import { BlogApiApp } from "../BlogApiApp";
 
 /**
  * Props required to create {DataStack}
@@ -29,5 +32,12 @@ export class DataStack extends Stack {
       autoDeleteObjects: true,
       accessControl: BucketAccessControl.PRIVATE
     });
+
+    const publishRole = new Role(this, "BlogPublisherRole", {
+      roleName: `BlogPublisher${BlogApiApp.APP_SUFFIX}`,
+      assumedBy: new AccountRootPrincipal()
+    });
+    this.metadataTable.grantReadWriteData(publishRole);
+    this.contentBucket.grantReadWrite(publishRole);
   }
 }

@@ -27,9 +27,17 @@ pipeline {
 //     stage("Functional Test") {
 //       steps { sh "yarn functional-test" }
 //     }
-//     stage("Deploy Prod") {
-//       when { branch "main" }
-//       steps { sh "echo TODO: Deploy Prod" }
-//     }
+    stage("Deploy Prod") {
+      when { branch "main" }
+      agent {
+        docker {
+          image cdkDeployImage()
+          reuseNode true
+        }
+      }
+      steps {
+        cdkDeploy(cdk: "yarn cdk-app")
+      }
+    }
   }
 }

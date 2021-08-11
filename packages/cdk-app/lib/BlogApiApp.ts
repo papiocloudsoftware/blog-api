@@ -8,7 +8,7 @@ import { ApplicationStack, DataStack, DeploymentStack, NetworkingStack } from ".
  */
 export class BlogApiApp {
   static readonly APP_SUFFIX = Fn.ref("AppSuffix");
-  static readonly DASH_APP_SUFFIX = Fn.conditionIf("AppSuffixSet", `-${BlogApiApp.APP_SUFFIX}`, "");
+  static readonly DASH_APP_SUFFIX = Fn.conditionIf("AppSuffixSet", `-${BlogApiApp.APP_SUFFIX}`, "").toString();
 
   static populate(app: App): void {
     const env = app.node.tryGetContext("environmentName");

@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc && webpack",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint --ignore-path ../../.eslintignore ."
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.77",

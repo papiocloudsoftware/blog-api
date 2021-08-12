@@ -21,9 +21,14 @@ export class DeploymentStack extends Stack {
   constructor(scope: Construct, id: string, props: DeploymentStackProps) {
     super(scope, id, props);
 
+    const httpApiRef = HttpApi.fromHttpApiAttributes(this, "HttpApi", {
+      httpApiId: props.httpApi.httpApiId,
+      apiEndpoint: props.httpApi.apiEndpoint
+    });
+
     // We separate out stage from resources on API to ensure all API resources have been fully updated before we cut over.
     this.stage = new HttpStage(this, "Stage", {
-      httpApi: props?.httpApi,
+      httpApi: httpApiRef,
       stageName: "api",
       autoDeploy: true
     });

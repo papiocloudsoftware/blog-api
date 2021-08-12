@@ -21,7 +21,7 @@ pipeline {
         }
       }
       steps {
-        cdkDeploy(cdk: "yarn cdk-app", namespace: "test", parameters: [AppSuffix: "test"])
+        cdkDeploy(cdk: "yarn cdk-app", context: [environmentName: "test"])
       }
     }
 //     stage("Functional Test") {

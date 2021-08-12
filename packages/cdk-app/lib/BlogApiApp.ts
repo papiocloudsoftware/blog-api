@@ -14,15 +14,20 @@ export class BlogApiApp {
     const env = app.node.tryGetContext("environmentName");
     const stackSuffix = env ? pascalCase(env) : "";
 
-    const networking = new NetworkingStack(app, `BlogApi${stackSuffix}Networking`);
-    new DataStack(app, `BlogApi${stackSuffix}Data`);
-    new ApplicationStack(app, `BlogApi${stackSuffix}Application`, {
-      httpApi: networking.httpApi
+    const networkingStack = new NetworkingStack(app, `BlogApi${stackSuffix}Networking`);
+    const dataStack = new DataStack(app, `BlogApi${stackSuffix}Data`);
+    const appStack = new ApplicationStack(app, `BlogApi${stackSuffix}Application`, {
+      httpApi: networkingStack.httpApi
     });
-    new DeploymentStack(app, `BlogApi${stackSuffix}Deployment`, {
-      httpApi: networking.httpApi,
+    const deployStack = new DeploymentStack(app, `BlogApi${stackSuffix}Deployment`, {
+      httpApi: networkingStack.httpApi,
       domainName: `blog${BlogApiApp.DASH_APP_SUFFIX}.papiocloud.com`
     });
+
+    appStack.addDependency(networkingStack);
+    appStack.addDependency(dataStack);
+
+    deployStack.addDependency(appStack);
 
     for (const child of app.node.children) {
       if (child instanceof Stack) {

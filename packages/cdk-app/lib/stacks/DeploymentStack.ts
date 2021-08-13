@@ -28,12 +28,13 @@ export class DeploymentStack extends Stack {
 
     if (props.domainName) {
       // Cut over DNS
+      const domainName = props.domainName.name;
       const hostedZone = new HostedZoneLookup(this, "HostedZone", {
-        domainName: props.domainName.name
+        domainName
       });
       new AliasRecord(this, "AliasRecord", {
         zone: hostedZone,
-        recordName: `${props.domainName}.`,
+        recordName: `${domainName}.`,
         target: RecordTarget.fromAlias(new ApiGatewayv2Domain(props.domainName)),
         comment: "Record for Public Cloudfront distribution"
       });

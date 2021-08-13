@@ -1,7 +1,7 @@
 import { AttributeType, ITable, Table } from "@aws-cdk/aws-dynamodb";
 import { AccountRootPrincipal, Role } from "@aws-cdk/aws-iam";
 import { Bucket, BucketAccessControl, IBucket } from "@aws-cdk/aws-s3";
-import { Construct, RemovalPolicy, Stack, StackProps } from "@aws-cdk/core";
+import { Aws, Construct, RemovalPolicy, Stack, StackProps } from "@aws-cdk/core";
 
 import { BlogApiApp } from "../BlogApiApp";
 
@@ -21,6 +21,7 @@ export class DataStack extends Stack {
     super(scope, id, props);
 
     this.metadataTable = new Table(this, "BlogMetadata", {
+      tableName: Aws.STACK_NAME,
       partitionKey: {
         type: AttributeType.STRING,
         name: "id"
@@ -28,6 +29,7 @@ export class DataStack extends Stack {
     });
 
     this.contentBucket = new Bucket(this, "BlogContent", {
+      bucketName: `blog-api-data${BlogApiApp.DASH_APP_SUFFIX}-${Aws.ACCOUNT_ID}`,
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
       accessControl: BucketAccessControl.PRIVATE

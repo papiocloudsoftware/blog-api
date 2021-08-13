@@ -4,19 +4,25 @@ import { pascalCase } from "change-case";
 import { ApplicationStack, DataStack, DeploymentStack, NetworkingStack } from "./stacks";
 
 /**
+ * Properties for the API app
+ */
+export interface BlogApiAppProps {
+  readonly domainName?: string;
+}
+
+/**
  * Blog API CDK App.  Populates resources given a CDK App
  */
 export class BlogApiApp {
   static readonly APP_SUFFIX = Fn.ref("AppSuffix");
   static readonly DASH_APP_SUFFIX = Fn.conditionIf("AppSuffixSet", `-${BlogApiApp.APP_SUFFIX}`, "").toString();
-  static readonly DOMAIN_NAME = `blog${BlogApiApp.DASH_APP_SUFFIX}.papiocloud.com`;
 
-  static populate(app: App): void {
+  static populate(app: App, props?: BlogApiAppProps): void {
     const env = app.node.tryGetContext("environmentName");
     const stackSuffix = env ? pascalCase(env) : "";
 
     const networkingStack = new NetworkingStack(app, `BlogApi${stackSuffix}Networking`, {
-      domainName: BlogApiApp.DOMAIN_NAME
+      domainName: props?.domainName
     });
     const dataStack = new DataStack(app, `BlogApi${stackSuffix}Data`);
     const appStack = new ApplicationStack(app, `BlogApi${stackSuffix}Application`, {
@@ -25,8 +31,8 @@ export class BlogApiApp {
     const deployStack = new DeploymentStack(app, `BlogApi${stackSuffix}Deployment`, {
       httpApi: networkingStack.httpApi,
       httpStage: networkingStack.httpStage,
-      deploymentKey: appStack.assetHash.substr(0, 6),
-      domainName: BlogApiApp.DOMAIN_NAME
+      domainName: networkingStack.domain,
+      deploymentKey: appStack.assetHash.substr(0, 6)
     });
 
     appStack.addDependency(networkingStack);

@@ -20,7 +20,7 @@ export class DataStack extends Stack {
   constructor(scope: Construct, id: string, props?: DataStackProps) {
     super(scope, id, props);
 
-    this.metadataTable = new Table(this, "BlogMetadata", {
+    this.metadataTable = new Table(this, "BlogMetadataV2", {
       tableName: Aws.STACK_NAME,
       partitionKey: {
         type: AttributeType.STRING,
@@ -28,7 +28,7 @@ export class DataStack extends Stack {
       }
     });
 
-    this.contentBucket = new Bucket(this, "BlogContent", {
+    this.contentBucket = new Bucket(this, "BlogContentV2", {
       bucketName: `blog-api-data${BlogApiApp.DASH_APP_SUFFIX}-${Aws.ACCOUNT_ID}`,
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,

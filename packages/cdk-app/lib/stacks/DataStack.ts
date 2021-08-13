@@ -21,6 +21,7 @@ export class DataStack extends Stack {
     super(scope, id, props);
 
     this.metadataTable = new Table(this, "BlogMetadataV2", {
+      removalPolicy: RemovalPolicy.DESTROY,
       tableName: Aws.STACK_NAME,
       partitionKey: {
         type: AttributeType.STRING,

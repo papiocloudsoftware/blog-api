@@ -26,7 +26,9 @@ export class BlogApiApp {
     });
     const dataStack = new DataStack(app, `BlogApi${stackSuffix}Data`);
     const appStack = new ApplicationStack(app, `BlogApi${stackSuffix}Application`, {
-      httpApi: networkingStack.httpApi
+      httpApi: networkingStack.httpApi,
+      metadataTable: dataStack.metadataTable,
+      contentBucket: dataStack.contentBucket
     });
     const deployStack = new DeploymentStack(app, `BlogApi${stackSuffix}Deployment`, {
       httpApi: networkingStack.httpApi,

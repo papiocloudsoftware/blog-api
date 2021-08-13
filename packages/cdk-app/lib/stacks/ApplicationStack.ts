@@ -1,9 +1,11 @@
 import { HttpApi, HttpMethod, HttpRoute, HttpRouteKey, PayloadFormatVersion } from "@aws-cdk/aws-apigatewayv2";
 import { LambdaProxyIntegration } from "@aws-cdk/aws-apigatewayv2-integrations";
+import { ITable } from "@aws-cdk/aws-dynamodb";
 import * as lambda from "@aws-cdk/aws-lambda";
 import { Code, Runtime } from "@aws-cdk/aws-lambda";
+import { IBucket } from "@aws-cdk/aws-s3";
 import { Asset } from "@aws-cdk/aws-s3-assets";
-import { Construct, Stack, StackProps } from "@aws-cdk/core";
+import { Construct, Duration, Stack, StackProps } from "@aws-cdk/core";
 import * as path from "path";
 
 /**
@@ -11,6 +13,8 @@ import * as path from "path";
  */
 export interface ApplicationStackProps extends StackProps {
   readonly httpApi: HttpApi;
+  readonly metadataTable: ITable;
+  readonly contentBucket: IBucket;
 }
 
 /**
@@ -30,8 +34,16 @@ export class ApplicationStack extends Stack {
     const lambdaHandler = new lambda.Function(this, "Lambda", {
       runtime: Runtime.NODEJS_12_X,
       code: Code.fromAsset(path.resolve(__dirname, "..", "lambdas")),
-      handler: "api-handler.handle"
+      handler: "api-handler.handle",
+      timeout: Duration.seconds(30),
+      environment: {
+        BLOG_BUCKET: props.contentBucket.bucketName,
+        BLOG_TABLE: props.metadataTable.tableName
+      }
     });
+
+    props.contentBucket.grantRead(lambdaHandler);
+    props.metadataTable.grantReadData(lambdaHandler);
 
     // Find hash of lambda code
     let assetHash: string | undefined;

@@ -1,1 +1,1 @@
-export * from "./HelloWorldController";
+export * from "./BlogApiController";

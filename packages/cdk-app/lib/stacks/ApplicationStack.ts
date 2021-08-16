@@ -37,7 +37,6 @@ export class ApplicationStack extends Stack {
       handler: "api-handler.handle",
       timeout: Duration.seconds(30),
       environment: {
-        BLOG_BUCKET: props.contentBucket.bucketName,
         BLOG_TABLE: props.metadataTable.tableName
       }
     });

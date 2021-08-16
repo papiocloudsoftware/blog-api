@@ -1,7 +1,7 @@
 import { AttributeType, ITable, Table } from "@aws-cdk/aws-dynamodb";
 import { AccountRootPrincipal, Role } from "@aws-cdk/aws-iam";
 import { Bucket, BucketAccessControl, IBucket } from "@aws-cdk/aws-s3";
-import { Aws, Construct, RemovalPolicy, Stack, StackProps } from "@aws-cdk/core";
+import { Aws, CfnOutput, Construct, RemovalPolicy, Stack, StackProps } from "@aws-cdk/core";
 
 import { BlogApiApp } from "../BlogApiApp";
 
@@ -42,5 +42,11 @@ export class DataStack extends Stack {
     });
     this.metadataTable.grantReadWriteData(publishRole);
     this.contentBucket.grantReadWrite(publishRole);
+
+    // Legacy CFN output no longer needed in application stack, remove after deploy
+    new CfnOutput(this, "ExportsOutputRefBlogContentV259A5C64E68B981C0", {
+      value: this.contentBucket.bucketName,
+      exportName: `${Aws.STACK_NAME}:ExportsOutputRefBlogContentV259A5C64E68B981C0`
+    });
   }
 }

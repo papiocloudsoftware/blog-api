@@ -41,6 +41,7 @@ export class BlogApiController {
       if (e instanceof PostNotFoundError) {
         return res.status(404).send();
       }
+      console.error(e);
       return res.status(500).send();
     }
   }
@@ -52,6 +53,7 @@ export class BlogApiController {
       const response: GetPostResponse = { post };
       return res.json(response).send();
     } catch (e) {
+      console.error(e);
       return res.status(500).send();
     }
   }
@@ -69,6 +71,7 @@ export class BlogApiController {
       if (e instanceof PostNotFoundError) {
         return res.status(404).send();
       }
+      console.error(e);
       return res.status(500).send();
     }
   }

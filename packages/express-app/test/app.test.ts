@@ -1,17 +1,43 @@
 import { Application } from "express";
+import * as request from "supertest";
 
-// import * as request from "supertest";
 import { App } from "../lib/app";
+import { BlogPost } from "../lib/model";
+
+process.env.BLOG_TABLE = "MockTable";
+
+const getLatestBlogPostMock = jest.fn();
+jest.mock("../lib/service", () => {
+  return {
+    BlogService: class {
+      getLatestBlogPost = getLatestBlogPostMock;
+    }
+  };
+});
 
 describe("app", () => {
-  // let app: Application;
+  let app: Application;
 
   beforeEach(() => {
-    // app = App.createApp();
+    app = App.createApp();
   });
 
-  it("TODO: Test API paths with request/response objects", async () => {
-    // TODO: Implement tests mocking BlogService
-    expect(true).toBeTruthy();
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("/api/posts/latest returns latest post", async () => {
+    const mockPost: BlogPost = {
+      id: "mock-id",
+      author: "Jest",
+      comment: "no comment",
+      created: 1234567890,
+      updated: 1234567890,
+      excerpt: "<h1>Mock Post</h1>"
+    };
+    getLatestBlogPostMock.mockImplementation(() => mockPost);
+    const res = await request(app).get("/api/posts/latest");
+    expect(res.status).toEqual(200);
+    expect(res.body).toEqual({ post: mockPost });
   });
 });

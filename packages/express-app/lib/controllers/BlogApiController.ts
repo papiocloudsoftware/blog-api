@@ -27,8 +27,22 @@ export class BlogApiController {
     }
   }
 
-  @Get("posts/:id")
+  @Get("posts/latest")
+  async getLatestPost(req: Request, res: Response) {
+    console.info("Getting latest post!");
+    try {
+      const post = await this.service.getLatestBlogPost();
+      const response: GetPostResponse = { post };
+      return res.json(response).send();
+    } catch (e) {
+      console.error(e.message, e);
+      return res.status(500).send();
+    }
+  }
+
+  @Get("post/:id")
   async getPost(req: Request, res: Response) {
+    console.log("Getting post by id!");
     const id = req.params.id;
     if (!id) {
       return res.status(400).send();
@@ -41,24 +55,12 @@ export class BlogApiController {
       if (e instanceof PostNotFoundError) {
         return res.status(404).send();
       }
-      console.error(e);
+      console.error(e.message, e);
       return res.status(500).send();
     }
   }
 
-  @Get("posts/latest")
-  async getLatestPost(req: Request, res: Response) {
-    try {
-      const post = await this.service.getLatestBlogPost();
-      const response: GetPostResponse = { post };
-      return res.json(response).send();
-    } catch (e) {
-      console.error(e);
-      return res.status(500).send();
-    }
-  }
-
-  @Get("posts/:id/content")
+  @Get("post/:id/content")
   async getPostContent(req: Request, res: Response) {
     const id = req.params.id;
     if (!id) {
@@ -71,7 +73,7 @@ export class BlogApiController {
       if (e instanceof PostNotFoundError) {
         return res.status(404).send();
       }
-      console.error(e);
+      console.error(e.message, e);
       return res.status(500).send();
     }
   }

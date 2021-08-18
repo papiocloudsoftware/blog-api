@@ -1,7 +1,7 @@
-import { CfnDeployment, DomainName, HttpApi, HttpStage, IDomainName } from "@aws-cdk/aws-apigatewayv2";
+import { CfnDeployment, HttpApi, HttpStage, IDomainName } from "@aws-cdk/aws-apigatewayv2";
 import { RecordTarget } from "@aws-cdk/aws-route53";
 import { ApiGatewayv2Domain } from "@aws-cdk/aws-route53-targets";
-import { Construct, Stack, StackProps } from "@aws-cdk/core";
+import { Construct, RemovalPolicy, Stack, StackProps } from "@aws-cdk/core";
 import { AliasRecord, HostedZoneLookup } from "@papio/cdk-constructs";
 
 /**
@@ -21,10 +21,11 @@ export class DeploymentStack extends Stack {
   constructor(scope: Construct, id: string, props: DeploymentStackProps) {
     super(scope, id, props);
 
-    new CfnDeployment(this, `Deployment${props.deploymentKey}`, {
+    const deployment = new CfnDeployment(this, `Deployment${props.deploymentKey}`, {
       apiId: props.httpApi.httpApiId,
       stageName: props.httpStage.stageName
     });
+    deployment.applyRemovalPolicy(RemovalPolicy.RETAIN);
 
     if (props.domainName) {
       // Cut over DNS

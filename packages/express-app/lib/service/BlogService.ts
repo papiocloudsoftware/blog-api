@@ -44,7 +44,22 @@ export class BlogService {
       key = response.LastEvaluatedKey;
       posts.push(...(response.Items as BlogPost[]));
     } while (key);
-    return posts;
+    // Sort using latest first
+    return posts.sort((a, b) => {
+      return b.created - a.created;
+    });
+  }
+
+  async getLatestBlogPost(): Promise<BlogPost> {
+    const response = await this.dynamoClient
+      .query({
+        TableName: this.tableName,
+        ScanIndexForward: false,
+        Limit: 1
+      })
+      .promise();
+
+    return response.Items![0] as BlogPost;
   }
 
   /**

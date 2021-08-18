@@ -45,6 +45,17 @@ export class BlogApiController {
     }
   }
 
+  @Get("posts/latest")
+  async getLatestPost(req: Request, res: Response) {
+    try {
+      const post = await this.service.getLatestBlogPost();
+      const response: GetPostResponse = { post };
+      return res.json(response).send();
+    } catch (e) {
+      return res.status(500).send();
+    }
+  }
+
   @Get("posts/:id/content")
   async getPostContent(req: Request, res: Response) {
     const id = req.params.id;

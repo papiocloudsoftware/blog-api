@@ -26,10 +26,6 @@ export class DataStack extends Stack {
       partitionKey: {
         type: AttributeType.STRING,
         name: "id"
-      },
-      sortKey: {
-        type: AttributeType.NUMBER,
-        name: "created"
       }
     });
 

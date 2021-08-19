@@ -51,15 +51,8 @@ export class BlogService {
   }
 
   async getLatestBlogPost(): Promise<BlogPost> {
-    const response = await this.dynamoClient
-      .query({
-        TableName: this.tableName,
-        ScanIndexForward: false,
-        Limit: 1
-      })
-      .promise();
-
-    return response.Items![0] as BlogPost;
+    const posts = await this.listAllBlogPosts();
+    return posts[0];
   }
 
   /**

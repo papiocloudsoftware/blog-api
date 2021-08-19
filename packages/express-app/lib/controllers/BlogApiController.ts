@@ -29,7 +29,6 @@ export class BlogApiController {
 
   @Get("posts/latest")
   async getLatestPost(req: Request, res: Response) {
-    console.info("Getting latest post!");
     try {
       const post = await this.service.getLatestBlogPost();
       const response: GetPostResponse = { post };

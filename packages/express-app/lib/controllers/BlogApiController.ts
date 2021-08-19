@@ -6,7 +6,7 @@ import { GetPostResponse, ListPostsResponse } from "../model/api";
 import { BlogService, PostNotFoundError } from "../service";
 
 /**
- * Example controller for overnightjs
+ * Blog API Controller for accessing data about blog posts
  */
 @Controller("api")
 export class BlogApiController {

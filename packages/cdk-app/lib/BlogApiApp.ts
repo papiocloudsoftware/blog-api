@@ -1,5 +1,6 @@
 import { App, CfnCondition, CfnParameter, Fn, Stack } from "@aws-cdk/core";
 import { pascalCase } from "change-case";
+import * as uuid from "uuid";
 
 import { ApplicationStack, DataStack, DeploymentStack, NetworkingStack } from "./stacks";
 
@@ -34,7 +35,7 @@ export class BlogApiApp {
       httpApi: networkingStack.httpApi,
       httpStage: networkingStack.httpStage,
       domainName: networkingStack.domain,
-      deploymentKey: appStack.assetHash.substr(0, 6)
+      deploymentKey: uuid.v4().substr(0, 6)
     });
 
     appStack.addDependency(networkingStack);

@@ -21,8 +21,6 @@ export interface ApplicationStackProps extends StackProps {
  * Stack that contains all the API resources
  */
 export class ApplicationStack extends Stack {
-  readonly assetHash: string;
-
   constructor(scope: Construct, id: string, props: ApplicationStackProps) {
     super(scope, id, props);
 
@@ -43,18 +41,6 @@ export class ApplicationStack extends Stack {
 
     props.contentBucket.grantRead(lambdaHandler);
     props.metadataTable.grantReadData(lambdaHandler);
-
-    // Find hash of lambda code
-    let assetHash: string | undefined;
-    for (const child of lambdaHandler.node.children) {
-      if (child instanceof Asset) {
-        assetHash = child.assetHash;
-      }
-    }
-    if (!assetHash) {
-      throw new Error("Unable to determine assetHash from lambda source");
-    }
-    this.assetHash = assetHash;
 
     new HttpRoute(this, "ProxyRoute", {
       httpApi: httpApiRef,

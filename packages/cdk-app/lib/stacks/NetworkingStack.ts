@@ -1,5 +1,6 @@
 import { DomainName, HttpApi, HttpApiMapping, HttpStage, IDomainName } from "@aws-cdk/aws-apigatewayv2";
-import { Construct, Stack, StackProps } from "@aws-cdk/core";
+import { HttpMethod } from "@aws-cdk/aws-apigatewayv2/lib/http/route";
+import { Construct, Duration, Stack, StackProps } from "@aws-cdk/core";
 import { SharedCertificate } from "@papio/cdk-constructs";
 
 import { BlogApiApp } from "../BlogApiApp";
@@ -24,7 +25,12 @@ export class NetworkingStack extends Stack {
 
     this.httpApi = new HttpApi(this, "Api", {
       apiName: `BlogApi${BlogApiApp.APP_SUFFIX}`,
-      createDefaultStage: false
+      createDefaultStage: false,
+      corsPreflight: {
+        allowOrigins: ["*"],
+        allowMethods: [HttpMethod.GET],
+        maxAge: Duration.days(1)
+      }
     });
 
     this.httpStage = new HttpStage(this, "Stage", {

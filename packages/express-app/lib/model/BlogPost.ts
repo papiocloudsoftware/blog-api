@@ -3,6 +3,7 @@
  */
 export interface BlogPost {
   readonly id: string;
+  readonly title: string;
   readonly author: string;
   readonly created: number;
   readonly updated: number;

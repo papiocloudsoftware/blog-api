@@ -29,11 +29,12 @@ describe("app", () => {
   it("/api/posts/latest returns latest post", async () => {
     const mockPost: BlogPost = {
       id: "mock-id",
+      title: "Mock Post",
       author: "Jest",
       comment: "no comment",
       created: 1234567890,
       updated: 1234567890,
-      excerpt: "<h1>Mock Post</h1>"
+      excerpt: "<p>Mock excerpt</p>"
     };
     getLatestBlogPostMock.mockImplementation(() => mockPost);
     const res = await request(app).get("/api/posts/latest");

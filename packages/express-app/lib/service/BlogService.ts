@@ -109,6 +109,7 @@ export class BlogService {
   private toBlogPost(metadata: PostMetadata): BlogPost {
     return {
       id: metadata.id,
+      title: metadata.title,
       author: metadata.author,
       created: metadata.created,
       updated: metadata.updated,

@@ -42,7 +42,7 @@ export class BlogService {
         })
         .promise();
       key = response.LastEvaluatedKey;
-      posts.push(...(response.Items as BlogPost[]));
+      posts.push(...response.Items!.map((post) => this.toBlogPost(post as PostMetadata)));
     } while (key);
     // Sort using latest first
     return posts.sort((a, b) => {
@@ -83,9 +83,7 @@ export class BlogService {
     if (!record) {
       throw new PostNotFoundError(id);
     }
-    return {
-      ...record
-    };
+    return this.toBlogPost(record);
   }
 
   /**
@@ -106,5 +104,16 @@ export class BlogService {
       })
       .promise();
     return content.Body!.toString();
+  }
+
+  private toBlogPost(metadata: PostMetadata): BlogPost {
+    return {
+      id: metadata.id,
+      author: metadata.author,
+      created: metadata.created,
+      updated: metadata.updated,
+      comment: metadata.comment,
+      excerpt: metadata.excerpt
+    };
   }
 }

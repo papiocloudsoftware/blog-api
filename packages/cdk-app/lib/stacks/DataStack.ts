@@ -1,4 +1,4 @@
-import { AttributeType, ITable, Table } from "@aws-cdk/aws-dynamodb";
+import { AttributeType, BillingMode, ITable, Table } from "@aws-cdk/aws-dynamodb";
 import { AccountRootPrincipal, Role } from "@aws-cdk/aws-iam";
 import { Bucket, BucketAccessControl, IBucket } from "@aws-cdk/aws-s3";
 import { Aws, CfnOutput, Construct, RemovalPolicy, Stack, StackProps } from "@aws-cdk/core";
@@ -26,7 +26,8 @@ export class DataStack extends Stack {
       partitionKey: {
         type: AttributeType.STRING,
         name: "id"
-      }
+      },
+      billingMode: BillingMode.PAY_PER_REQUEST
     });
 
     this.contentBucket = new Bucket(this, "BlogContentV2", {

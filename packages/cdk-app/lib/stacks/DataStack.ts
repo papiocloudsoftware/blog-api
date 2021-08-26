@@ -15,6 +15,7 @@ export interface DataStackProps extends StackProps {}
  */
 export class DataStack extends Stack {
   readonly metadataTable: ITable;
+  readonly subscriptionsTable: ITable;
   readonly contentBucket: IBucket;
 
   constructor(scope: Construct, id: string, props?: DataStackProps) {
@@ -26,6 +27,16 @@ export class DataStack extends Stack {
       partitionKey: {
         type: AttributeType.STRING,
         name: "id"
+      },
+      billingMode: BillingMode.PAY_PER_REQUEST
+    });
+
+    this.subscriptionsTable = new Table(this, "BlogSubscriptions", {
+      removalPolicy: RemovalPolicy.RETAIN,
+      tableName: `${Aws.STACK_NAME}Subscriptions`,
+      partitionKey: {
+        type: AttributeType.STRING,
+        name: "email"
       },
       billingMode: BillingMode.PAY_PER_REQUEST
     });

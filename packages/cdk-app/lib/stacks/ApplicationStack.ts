@@ -4,7 +4,6 @@ import { ITable } from "@aws-cdk/aws-dynamodb";
 import * as lambda from "@aws-cdk/aws-lambda";
 import { Code, Runtime } from "@aws-cdk/aws-lambda";
 import { IBucket } from "@aws-cdk/aws-s3";
-import { Asset } from "@aws-cdk/aws-s3-assets";
 import { Construct, Duration, Stack, StackProps } from "@aws-cdk/core";
 import * as path from "path";
 
@@ -42,13 +41,19 @@ export class ApplicationStack extends Stack {
     props.contentBucket.grantRead(lambdaHandler);
     props.metadataTable.grantReadData(lambdaHandler);
 
-    new HttpRoute(this, "ProxyRoute", {
-      httpApi: httpApiRef,
-      routeKey: HttpRouteKey.with("/{proxy+}", HttpMethod.GET),
-      integration: new LambdaProxyIntegration({
-        payloadFormatVersion: PayloadFormatVersion.VERSION_1_0,
-        handler: lambdaHandler
-      })
-    });
+    for (const method of [HttpMethod.GET, HttpMethod.POST, HttpMethod.DELETE]) {
+      let id = "ProxyRoute";
+      if (method !== HttpMethod.GET) {
+        id = `${id}${method}`;
+      }
+      new HttpRoute(this, id, {
+        httpApi: httpApiRef,
+        routeKey: HttpRouteKey.with("/{proxy+}", method),
+        integration: new LambdaProxyIntegration({
+          payloadFormatVersion: PayloadFormatVersion.VERSION_1_0,
+          handler: lambdaHandler
+        })
+      });
+    }
   }
 }

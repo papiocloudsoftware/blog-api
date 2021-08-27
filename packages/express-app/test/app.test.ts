@@ -4,14 +4,19 @@ import * as request from "supertest";
 import { App } from "../lib/app";
 import { BlogPost } from "../lib/model";
 
+process.env.DOMAIN_NAME = "api.mock.com";
 process.env.BLOG_TABLE = "MockTable";
+process.env.SUBSCRIBERS_TABLE = "MockSubTable";
+process.env.RECAPTCHA_SECRET_ID = "mock-secret";
 
 const getLatestBlogPostMock = jest.fn();
 jest.mock("../lib/service", () => {
   return {
     BlogService: class {
       getLatestBlogPost = getLatestBlogPostMock;
-    }
+    },
+    SubscriberService: class {},
+    CaptchaService: class {}
   };
 });
 

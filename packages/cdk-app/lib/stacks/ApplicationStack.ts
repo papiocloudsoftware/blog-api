@@ -1,18 +1,28 @@
-import { HttpApi, HttpMethod, HttpRoute, HttpRouteKey, PayloadFormatVersion } from "@aws-cdk/aws-apigatewayv2";
+import {
+  HttpApi,
+  HttpMethod,
+  HttpRoute,
+  HttpRouteKey,
+  HttpStage,
+  PayloadFormatVersion
+} from "@aws-cdk/aws-apigatewayv2";
 import { LambdaProxyIntegration } from "@aws-cdk/aws-apigatewayv2-integrations";
 import { ITable } from "@aws-cdk/aws-dynamodb";
+import { Effect, PolicyStatement } from "@aws-cdk/aws-iam";
 import * as lambda from "@aws-cdk/aws-lambda";
 import { Code, Runtime } from "@aws-cdk/aws-lambda";
 import { IBucket } from "@aws-cdk/aws-s3";
-import { Construct, Duration, Stack, StackProps } from "@aws-cdk/core";
+import { Aws, Construct, Duration, Stack, StackProps } from "@aws-cdk/core";
 import * as path from "path";
 
 /**
  * Props required to create {ApplicationStack}
  */
 export interface ApplicationStackProps extends StackProps {
+  readonly domainName: string;
   readonly httpApi: HttpApi;
   readonly metadataTable: ITable;
+  readonly subscriptionsTable: ITable;
   readonly contentBucket: IBucket;
 }
 
@@ -34,12 +44,24 @@ export class ApplicationStack extends Stack {
       handler: "api-handler.handle",
       timeout: Duration.seconds(30),
       environment: {
-        BLOG_TABLE: props.metadataTable.tableName
-      }
+        DOMAIN_NAME: props.domainName,
+        BLOG_TABLE: props.metadataTable.tableName,
+        SUBSCRIBERS_TABLE: props.subscriptionsTable.tableName,
+        // Responsibility of caller to populate secret outside app
+        RECAPTCHA_SECRET_ID: Aws.STACK_NAME
+      },
+      initialPolicy: [
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: ["ses:SendEmail"],
+          resources: ["*"]
+        })
+      ]
     });
 
     props.contentBucket.grantRead(lambdaHandler);
     props.metadataTable.grantReadData(lambdaHandler);
+    props.subscriptionsTable.grantReadWriteData(lambdaHandler);
 
     for (const method of [HttpMethod.GET, HttpMethod.POST, HttpMethod.DELETE]) {
       let id = "ProxyRoute";

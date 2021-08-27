@@ -31,15 +31,23 @@ export class DataStack extends Stack {
       billingMode: BillingMode.PAY_PER_REQUEST
     });
 
-    this.subscriptionsTable = new Table(this, "BlogSubscriptions", {
+    const subscriptionsTable = new Table(this, "BlogSubscriptionsV2", {
       removalPolicy: RemovalPolicy.RETAIN,
       tableName: `${Aws.STACK_NAME}Subscriptions`,
       partitionKey: {
         type: AttributeType.STRING,
-        name: "email"
+        name: "id"
       },
       billingMode: BillingMode.PAY_PER_REQUEST
     });
+    subscriptionsTable.addGlobalSecondaryIndex({
+      indexName: "Email",
+      partitionKey: {
+        type: AttributeType.STRING,
+        name: "email"
+      }
+    });
+    this.subscriptionsTable = subscriptionsTable;
 
     this.contentBucket = new Bucket(this, "BlogContentV2", {
       bucketName: `blog-api-data${BlogApiApp.DASH_APP_SUFFIX}-${Aws.ACCOUNT_ID}`,

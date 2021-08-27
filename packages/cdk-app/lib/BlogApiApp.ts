@@ -8,7 +8,7 @@ import { ApplicationStack, DataStack, DeploymentStack, NetworkingStack } from ".
  * Properties for the API app
  */
 export interface BlogApiAppProps {
-  readonly domainName?: string;
+  readonly domainName: string;
 }
 
 /**
@@ -18,17 +18,19 @@ export class BlogApiApp {
   static readonly APP_SUFFIX = Fn.ref("AppSuffix");
   static readonly DASH_APP_SUFFIX = Fn.conditionIf("AppSuffixSet", `-${BlogApiApp.APP_SUFFIX}`, "").toString();
 
-  static populate(app: App, props?: BlogApiAppProps): void {
+  static populate(app: App, props: BlogApiAppProps): void {
     const env = app.node.tryGetContext("environmentName");
     const stackSuffix = env ? pascalCase(env) : "";
 
     const networkingStack = new NetworkingStack(app, `BlogApi${stackSuffix}Networking`, {
-      domainName: props?.domainName
+      domainName: props.domainName
     });
     const dataStack = new DataStack(app, `BlogApi${stackSuffix}Data`);
     const appStack = new ApplicationStack(app, `BlogApi${stackSuffix}Application`, {
+      domainName: props.domainName,
       httpApi: networkingStack.httpApi,
       metadataTable: dataStack.metadataTable,
+      subscriptionsTable: dataStack.subscriptionsTable,
       contentBucket: dataStack.contentBucket
     });
     const deployStack = new DeploymentStack(app, `BlogApi${stackSuffix}Deployment`, {

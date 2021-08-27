@@ -14,7 +14,11 @@ export class BlogService {
   readonly dynamoClient: DocumentClient;
   readonly s3Client: AWS.S3;
 
-  constructor(config: AppConfig, dynamoClient = new DocumentClient(), s3Client = new AWS.S3()) {
+  constructor(
+    config: AppConfig = AppConfig.fromEnvironment(),
+    dynamoClient = new DocumentClient(),
+    s3Client = new AWS.S3()
+  ) {
     this.config = config;
     this.dynamoClient = dynamoClient;
     this.s3Client = s3Client;

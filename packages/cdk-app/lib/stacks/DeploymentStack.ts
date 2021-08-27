@@ -11,7 +11,7 @@ export interface DeploymentStackProps extends StackProps {
   readonly httpApi: HttpApi;
   readonly httpStage: HttpStage;
   readonly deploymentKey: string;
-  readonly domainName?: IDomainName;
+  readonly domainName: IDomainName;
 }
 
 /**
@@ -27,18 +27,16 @@ export class DeploymentStack extends Stack {
     });
     deployment.applyRemovalPolicy(RemovalPolicy.RETAIN);
 
-    if (props.domainName) {
-      // Cut over DNS
-      const domainName = props.domainName.name;
-      const hostedZone = new HostedZoneLookup(this, "HostedZone", {
-        domainName
-      });
-      new AliasRecord(this, "AliasRecord", {
-        zone: hostedZone,
-        recordName: `${domainName}.`,
-        target: RecordTarget.fromAlias(new ApiGatewayv2Domain(props.domainName)),
-        comment: "Record for Public Cloudfront distribution"
-      });
-    }
+    // Cut over DNS
+    const domainName = props.domainName.name;
+    const hostedZone = new HostedZoneLookup(this, "HostedZone", {
+      domainName
+    });
+    new AliasRecord(this, "AliasRecord", {
+      zone: hostedZone,
+      recordName: `${domainName}.`,
+      target: RecordTarget.fromAlias(new ApiGatewayv2Domain(props.domainName)),
+      comment: "Record for Public Cloudfront distribution"
+    });
   }
 }

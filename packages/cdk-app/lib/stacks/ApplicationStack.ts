@@ -47,8 +47,8 @@ export class ApplicationStack extends Stack {
         DOMAIN_NAME: props.domainName,
         BLOG_TABLE: props.metadataTable.tableName,
         SUBSCRIBERS_TABLE: props.subscriptionsTable.tableName,
-        // Responsibility of caller to populate secret outside app
-        RECAPTCHA_SECRET_ID: Aws.STACK_NAME
+        // Responsibility of caller to populate create/secret outside app
+        RECAPTCHA_SECRET_ID: `${Aws.STACK_NAME}RecaptchaSecretKey`
       },
       initialPolicy: [
         new PolicyStatement({

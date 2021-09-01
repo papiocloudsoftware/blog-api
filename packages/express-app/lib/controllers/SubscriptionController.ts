@@ -1,7 +1,7 @@
 import { Controller, Delete, Post } from "@overnightjs/core";
 import { Request, Response } from "express";
 
-import { CaptchaService, SubscriberService } from "../service";
+import { SubscriberService } from "../service";
 
 /**
  * API Controller for subscription handling for the blog.  Listing and emailing
@@ -10,9 +10,8 @@ import { CaptchaService, SubscriberService } from "../service";
 @Controller("api")
 export class SubscriptionController {
   readonly subscriberService: SubscriberService;
-  readonly captchaService: CaptchaService;
 
-  constructor(subscriberService = new SubscriberService(), captchaService = new CaptchaService()) {
+  constructor(subscriberService = new SubscriberService()) {
     this.subscriberService = subscriberService;
   }
 
@@ -22,17 +21,7 @@ export class SubscriptionController {
     if (!email) {
       return res.status(400).send();
     }
-    const captcha = req.body.captcha;
-    if (!captcha) {
-      return res.status(400).send();
-    }
     try {
-      const valid = await this.captchaService.validate(captcha);
-      if (!valid) {
-        // TODO: Better code for invalid captcha?
-        return res.status(400);
-      }
-
       await this.subscriberService.subscribe(email);
       return res.status(200).send();
     } catch (e) {

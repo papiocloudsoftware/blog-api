@@ -28,7 +28,7 @@ export class NetworkingStack extends Stack {
       createDefaultStage: false,
       corsPreflight: {
         allowOrigins: ["*"],
-        allowMethods: [HttpMethod.GET],
+        allowMethods: [HttpMethod.GET, HttpMethod.POST, HttpMethod.DELETE],
         maxAge: Duration.days(1)
       }
     });

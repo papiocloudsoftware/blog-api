@@ -20,17 +20,12 @@ export class AppConfig {
     if (!subscribersTable) {
       throw new Error("SUBSCRIBERS_TABLE not configured in environment");
     }
-    const recaptchaSecretId = env.RECAPTCHA_SECRET_ID;
-    if (!recaptchaSecretId) {
-      throw new Error("RECAPTCHA_SECRET_ID not configured in environment");
-    }
-    return new AppConfig(domainName, metadataTable, subscribersTable, recaptchaSecretId);
+    return new AppConfig(domainName, metadataTable, subscribersTable);
   }
 
-  constructor(domainName: string, metadataTable: string, subscribersTable: string, recaptchaSecretId: string) {
+  constructor(domainName: string, metadataTable: string, subscribersTable: string) {
     this.domainName = domainName;
     this.metadataTable = metadataTable;
     this.subscribersTable = subscribersTable;
-    this.recaptchaSecretId = recaptchaSecretId;
   }
 }

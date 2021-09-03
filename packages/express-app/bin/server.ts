@@ -2,6 +2,10 @@ import { App } from "../lib/app";
 
 const port = 8080;
 
+process.env.DOMAIN_NAME = "http://localhost:8080";
+process.env.BLOG_TABLE = "BlogTable";
+process.env.SUBSCRIBERS_TABLE = "BlogTableSubscriptions";
+
 // Create the app
 const app = App.createApp();
 

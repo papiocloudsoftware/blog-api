@@ -63,7 +63,7 @@ export class ApplicationStack extends Stack {
     props.metadataTable.grantReadData(lambdaHandler);
     props.subscriptionsTable.grantReadWriteData(lambdaHandler);
 
-    for (const method of [HttpMethod.GET, HttpMethod.POST, HttpMethod.DELETE]) {
+    for (const method of [HttpMethod.GET, HttpMethod.POST, HttpMethod.DELETE, HttpMethod.OPTIONS]) {
       let id = "ProxyRoute";
       if (method !== HttpMethod.GET) {
         id = `${id}${method}`;

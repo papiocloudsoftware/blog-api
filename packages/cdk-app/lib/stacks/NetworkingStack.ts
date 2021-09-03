@@ -25,12 +25,7 @@ export class NetworkingStack extends Stack {
 
     this.httpApi = new HttpApi(this, "Api", {
       apiName: `BlogApi${BlogApiApp.APP_SUFFIX}`,
-      createDefaultStage: false,
-      corsPreflight: {
-        allowOrigins: ["*"],
-        allowMethods: [HttpMethod.GET, HttpMethod.POST, HttpMethod.DELETE],
-        maxAge: Duration.days(1)
-      }
+      createDefaultStage: false
     });
 
     this.httpStage = new HttpStage(this, "Stage", {

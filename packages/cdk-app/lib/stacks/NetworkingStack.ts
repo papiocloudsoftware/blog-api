@@ -1,6 +1,5 @@
 import { DomainName, HttpApi, HttpApiMapping, HttpStage, IDomainName } from "@aws-cdk/aws-apigatewayv2";
-import { HttpMethod } from "@aws-cdk/aws-apigatewayv2/lib/http/route";
-import { Construct, Duration, Stack, StackProps } from "@aws-cdk/core";
+import { Construct, Stack, StackProps } from "@aws-cdk/core";
 import { SharedCertificate } from "@papio/cdk-constructs";
 
 import { BlogApiApp } from "../BlogApiApp";

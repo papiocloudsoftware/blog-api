@@ -140,7 +140,9 @@ export class SubscriberService {
         Body: { Html: { Data: body } }
       }
     };
-    await this.sesClient.sendEmail(request).promise();
+    // TODO: Enable email verification
+    console.info(`TODO: Send Email\n  ${JSON.stringify(request, undefined, 2)}`);
+    // await this.sesClient.sendEmail(request).promise();
   }
 
   private async save(subscriber: Subscriber): Promise<void> {
@@ -157,9 +159,12 @@ export class SubscriberService {
     while (attempt < 5) {
       attempt += 1;
       const id = crypto.createHash("sha256").update(email).update(new Date().toISOString()).digest("hex").substr(0, 24);
-      const existing = this.findSubscriberById(id);
+      console.log(`Checking for subscriber with id: ${id}`);
+      const existing = await this.findSubscriberById(id);
       if (!existing) {
         return id;
+      } else {
+        console.log(`Subscriber found with id '${id}': ${existing?.email}`);
       }
     }
     throw new Error(`Unable to generate unique id for ${email} in 5 attempts`);
